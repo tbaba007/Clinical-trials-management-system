@@ -1,0 +1,39 @@
+.button{
+    width:50%,
+
+}
+.LoginInputTextSize
+{
+    width: 90%;
+    margin-left: 1em;
+
+}
+.loginbutton
+{
+    width:60%;
+   
+}
+.logintextheader
+{
+    float:left;
+    margin-left:1em
+}
+.loginPageMarginTop
+{
+    margin-top: 10%;
+}
+.loginPageMarginBanner
+{
+    margin-top: 8%;
+    height:100%;
+}
+.collapse {
+    display: none
+  }
+
+  .collapse.in {
+    display: block;
+    transition: .3s transform ease-in-out;
+  }
+
+  
