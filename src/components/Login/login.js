@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
 import { Link } from 'react-router-dom';
-import { Api } from '../../Helper/Api';
+const loginService=require('../../Services/authentication.service');
 export default function Login(props) {
 	const username = useFormDetails(props.location.state === undefined ? '' : props.location.state.user);
 	const password = useFormDetails('');
@@ -33,28 +33,21 @@ export default function Login(props) {
 			password: password.value.trim()
 		};
 		//call Api to validate user
-		
-			fetch(Api + 'user/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(loginData)
-			})
-				.then((response) => response.json())
-				.then((success) => {
-					debugger;
-					if (JSON.stringify(success).includes('Username or password incorrect'))
+
+		loginService.login(loginData.username,loginData.password)
+		.then((response)=>{
+			if (JSON.stringify(response).includes('Username or password incorrect'))
 						setFormValidation('Username or Password Incorrect');
-					else
+			else
 						// Navigate to DashBoard
-						return props.history.push('/DashBoard', { user: success });
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		
+				return props.history.push('/DashBoard', { user: response });
+		}).catch(err=>{
+			console.log(err);
+
+		})
 		e.preventDefault();
+		
+			
 	}
 	return (
 		<div className="row">

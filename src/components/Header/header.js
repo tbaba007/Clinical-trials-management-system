@@ -26,7 +26,8 @@ export function Header(props) {
 				<ul className="navbar-nav mr-auto">
 					<li
 						className="nav-item"
-						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden' }}
+						style={{ visibility: props.role.includes('All')|props.role.includes('Patients') ? 'visible' : 'hidden',
+					display:!props.role.includes('All')|!props.role.includes('Patients')?"none":"" }}
 					>
 						<Link to={{ pathname: '/ManagePatient', state: { props } }} className="nav-link">
 							Manage patients
@@ -35,7 +36,8 @@ export function Header(props) {
 
 					<li
 						className="nav-item"
-						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden' }}
+						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden',
+						display:!props.role.includes('All')?"none":"" }}
 					>
 						<Link to={{ pathname: '/managestaff', state: { props } }} className="nav-link">
 							Manage Staff
@@ -43,7 +45,8 @@ export function Header(props) {
 					</li>
 					<li
 						className="nav-item"
-						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden' }}
+						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden',
+						display:!props.role.includes('All')?"none":"" }}
 					>
 						<Link to={{ pathname: '/managedepartment', state: { props } }} className="nav-link">
 							Manage Departments
@@ -52,7 +55,8 @@ export function Header(props) {
 
 					<li
 						className="nav-item"
-						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden' }}
+						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden',
+						display:!props.role.includes('All')?"none":"" }}
 					>
 						<Link to={{ pathname: '/managedisease', state: { props } }} className="nav-link">
 							Manage Diseases
@@ -62,7 +66,8 @@ export function Header(props) {
 
 					<li
 						className="nav-item"
-						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden' }}
+						style={{ visibility: props.role.includes('All')|props.role.includes('Complaints') ? 'visible' : 'hidden',
+					display:!props.role.includes('All')|!props.role.includes('Complaints')?"none":"" }}
 					>
 						<Link to={{ pathname: '/managecomplaints', state: { props } }} className="nav-link">
 							 Complaints
@@ -78,7 +83,8 @@ export function Header(props) {
 					</li>
 					<li
 						className="nav-item"
-						style={{ visibility: props.role.includes('All') ? 'visible' : 'hidden' }}
+						style={{ visibility: props.role.includes('All')|props.role.includes('Test') ? 'visible' : 'hidden',
+						display:!props.role.includes('All')|!props.role.includes('Test')?"none":"" }}
 					>
 						<Link to={{ pathname: '/managereports', state: { props } }} className="nav-link">
 							View Reports

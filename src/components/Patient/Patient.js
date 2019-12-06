@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Api } from '../../Helper/Api';
 import PatientList from './PatientList';
 import {Redirect} from 'react-router-dom';
+const patientService=require('../../Services/patient.service');
 export default function Patient(props) {
 	
 	const fullname = useFormDetails('');
@@ -21,8 +21,8 @@ export default function Patient(props) {
 	
 	useEffect(()=>{
 		const fetchPatients=async ()=>{
-		await fetch(Api+"patient/getall")
-			.then(res=>res.json())
+		await patientService.fetchPatients()
+			
 			.then(success=>{
 				setPatientList(success);
 			}).catch(err=>{
@@ -34,8 +34,7 @@ export default function Patient(props) {
 
 	useEffect(()=>{
 		const fetchDoctors=async()=>{
-			await fetch(Api+"user/getAll")
-			.then(response=>response.json())
+			await patientService.fetchDoctors()
 			.then(success=>{
 				setDoctors(success)
 			}).catch(err=>{
@@ -56,13 +55,8 @@ export default function Patient(props) {
 	function Delete(e,index)
 	{
 		if(window.confirm('Are you sure you want to delete this patient?'))
-		fetch(Api+"patient/delete/"+index,{
-			method:'DELETE',
-			headers:{
-				'content-type':'application/json'
-			}
-		}).then(res=>res.text())
-		.then(success=>{
+		patientService.deletePatient(index)
+			.then(success=>{
 			if(success){
 				alert('Patient deleted Successfully!')
 				setIsDeleted(true);
@@ -101,13 +95,7 @@ export default function Patient(props) {
             "dateregistered":new Date().getFullYear()+"-"+(parseInt(new Date().getMonth().toString())+1)+"-"+new Date().getDate(),
             "createdby":props.location.state.props.user.id
         };
-
-        fetch(Api+"patient/add",{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
-            },body:JSON.stringify(patientModel)
-        }).then(res=>res.text())
+		patientService.addPatient(patientModel)
         .then(success=>{
             if(success==="OK")
             {
@@ -124,8 +112,8 @@ export default function Patient(props) {
         })
 	}
 	
-	if(props.location.state.props.role!==undefined && !props.location.state.props.role.includes('All','Receptionist'))
-	return <Redirect to="/unauthorized"/>
+	// if(props.location.state.props.role!==undefined && !props.location.state.props.role.includes('All')|props.location.state.props.role.includes('Patients'))
+	// return <Redirect to="/unauthorized"/>
 	return (
 		
 		<div>

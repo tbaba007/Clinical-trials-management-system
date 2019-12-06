@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
 import { Link } from 'react-router-dom';
-import { Api } from '../../Helper/Api';
-
+const resetPasswordService=require('../../Services/authentication.service');
 export default function ForgotPassword(props) {
 	const [ username, setUserName ] = useState('');
 	const [ formvalidation, setValidation ] = useState('');
@@ -27,15 +26,9 @@ export default function ForgotPassword(props) {
 
 		setValidation('');
 		//Post details to API to reset Password
-		
-		fetch(Api + 'user/resetpassword/'+username, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-			.then((res) => res.text())
-			.then((success) => {
+		resetPasswordService.resetpassword(username)
+		.then((success)=>{
+			debugger;
 				if (success === 'OK') {
 					setSuccessmessage(
 						'Password Reset Successfully!. Kindly use user1 to login ' +
@@ -49,9 +42,12 @@ export default function ForgotPassword(props) {
 				}
 			})
 			.catch((err) => {
+				debugger;
 				setValidation('An error occured while trying to change the password');
 			});
 		e.preventDefault();
+		
+		
 	}
 	return (
 		<div className="row">
