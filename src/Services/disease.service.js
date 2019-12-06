@@ -19,7 +19,7 @@ const updateDisease=(id)=>{
     .then(response.handleResponseText)
 }
 const deleteDisease=(id)=>{
-    return fetech(Api+'condition/delete/'+id,httpHelper.Delete())
+    return fetch(Api+'condition/delete/'+id,httpHelper.Delete())
     .then(response.handleResponseText)
 }
 const getDiseaseByName=(name)=>{

@@ -19,3 +19,10 @@ const deleteDepartment=(id)=>{
     return fetch(Api+'department/delete/'+id,httpHelper.Delete())
     .then(response.handleResponseText)
 }
+
+export{
+    deleteDepartment,
+    updateDepartment,
+    addDepartment,
+    getDepartments
+}

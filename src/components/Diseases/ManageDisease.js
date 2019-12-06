@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Header from '../Header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
-import { Api } from '../../Helper/Api';
 import DiseaseList from './DiseaseList';
+const disease=require('../../Services/disease.service');
 export default function ManageDisease(props) {
 	const [ diseaseName, setDiseaseName ] = useState('');
     const [ diseaseList, setDiseaseList ] = useState([]);
@@ -19,8 +19,7 @@ export default function ManageDisease(props) {
 	useEffect(
 		() => {
 			const fetchDiseases = async () => {
-				await fetch(Api + 'condition/getall')
-					.then((res) => res.json())
+				await disease.fetchDisease()
 					.then((success) => {
 						setDiseaseList(success);
 					})
@@ -50,20 +49,14 @@ export default function ManageDisease(props) {
         setDiseaseid(0);
     };
     const handleSearch=(e,index)=>{
-     fetch(Api+"condition/search/"+e)
-     .then(response=>response.json())
+        disease.getDiseaseByName(e)
      .then(success=>{
-         debugger;
+         setDiseaseList(success)
      })
     }
 	const handleDelete = (e,id) => {
         if(window.confirm('Are you sure you want to delete this disease?'))
-        fetch(Api+"condition/delete/"+id,{
-            method:'DELETE',
-            headers:{
-                'content-type':'application/json'
-            }
-        }).then(response=>response.text())
+        disease.deleteDisease(id)
         .then(success=>{
             if(success==="OK")
             {
@@ -91,13 +84,7 @@ export default function ManageDisease(props) {
 
         if(diseaseid>0)
         {
-            fetch(Api+"condition/update/"+diseaseid,{
-                method:'PUT',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify(diseaseData)
-            }).then(response=>response.text())
+            disease.updateDisease(diseaseid)
               .then(success=>{
                   if(success==="OK")
                  {
@@ -113,13 +100,7 @@ export default function ManageDisease(props) {
         }
         else
         {
-            fetch(Api+"condition/add",{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify(diseaseData)
-            }).then(response=>response.text())
+            disease.addDisease(diseaseData)
               .then(success=>{
                   if(success==="OK")
                  {

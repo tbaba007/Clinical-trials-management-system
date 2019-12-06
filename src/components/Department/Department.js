@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Header from '../Header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
-import { Api } from '../../Helper/Api';
 import DepartmentList from './DepartmentList';
+const department=require('../../Services/department.service');
 export default function ManageDisease(props) {
 	const [ departmentName, setDepartmentName ] = useState('');
 	const [ departmentList, setDepartmentList ] = useState([]);
@@ -19,8 +19,7 @@ export default function ManageDisease(props) {
 	useEffect(
 		() => {
 			const fetchDepartment = async () => {
-				await fetch(Api + 'department/getall')
-					.then((res) => res.json())
+				await department.getDepartments()
 					.then((success) => {
 						setDepartmentList(success);
 					})
@@ -52,13 +51,7 @@ export default function ManageDisease(props) {
 	const handleDelete = (e, id) => {
 		debugger;
 		if (window.confirm('Are you sure you want to delete this department?'))
-			fetch(Api + 'department/delete/' + id, {
-				method: 'DELETE',
-				headers: {
-					'content-type': 'application/json'
-				}
-			})
-				.then((response) => response.text())
+			department.deleteDepartment(id)
 				.then((success) => {
 					if (success === 'OK') {
 						alert('Department deleted successfully!');
@@ -87,14 +80,7 @@ export default function ManageDisease(props) {
 		};
 
 		if (departmentid > 0) {
-			fetch(Api + 'department/update/' + departmentid, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(departmentData)
-			})
-				.then((response) => response.text())
+			department.updateDepartment(departmentid,departmentData)
 				.then((success) => {
 					if (success === 'OK') {
 						alert('department has been updated successfully!');
@@ -107,14 +93,7 @@ export default function ManageDisease(props) {
 					alert('An error occured while performing your request!');
 				});
 		} else {
-			fetch(Api + 'department/add', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(departmentData)
-			})
-				.then((response) => response.text())
+			department.addDepartment(departmentData)
 				.then((success) => {
 					if (success === 'OK') {
 						alert('Department added successfully!');

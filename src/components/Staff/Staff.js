@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Header from '../Header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Api } from '../../Helper/Api';
 import { Redirect } from 'react-router-dom';
 import StaffList from './StaffList';
+const department =require('../../Services/department.service');
+const role=require('../../Services/role.service');
+const staff=require('../../Services/staff.service');
 export default function Staff(props) {
 	let fullname = useFormDetails('');
 	const username = useFormDetails('');
@@ -29,8 +31,7 @@ export default function Staff(props) {
 	useEffect(() => {
 		InputFocus.current.focus();
 		const fetchDepartment = async () => {
-			await fetch(Api + 'department/getall')
-				.then((response) => response.json())
+			await department.getDepartments()
 				.then((success) => {
 					setDepartmentList(success);
 				})
@@ -41,8 +42,7 @@ export default function Staff(props) {
 
 	useEffect(() => {
 		const fetchRole = async () => {
-			await fetch(Api + 'role/getall')
-				.then((response) => response.json())
+			await role.getAllRoles()
 				.then((success) => {
 					setRoleList(success);
 				})
@@ -53,8 +53,7 @@ export default function Staff(props) {
 
 	useEffect(() => {
 		const fetchStaffType = async () => {
-			await fetch(Api + 'stafftype/getall')
-				.then((response) => response.json())
+			await staff.getStaffType()
 				.then((success) => {
 					setStaffTypeList(success);
 				})
@@ -65,8 +64,7 @@ export default function Staff(props) {
 
 	useEffect(() => {
 		const fetchSpecialty = async () => {
-			await fetch(Api + 'specialty/getall')
-				.then((response) => response.json())
+			await staff.getStaffSpecialty()
 				.then((success) => {
 					setSpecialtyList(success);
 				})
@@ -78,8 +76,7 @@ export default function Staff(props) {
 	useEffect(
 		() => {
 			const fetchUserList = async () => {
-				await fetch(Api + 'user/getall')
-					.then((response) => response.json())
+				await staff.getAllStaff()
 					.then((success) => {
 						setUserList(success);
 					})
@@ -150,14 +147,7 @@ export default function Staff(props) {
 		};
 		//post to api
 		if (staffid.value < 1) {
-			fetch(Api + 'user/add', {
-				method: 'POST',
-				headers: {
-					'content-type': 'application/json'
-				},
-				body: JSON.stringify(staffPostBody)
-			})
-				.then((res) => res.text())
+			staff.addStaff(staffPostBody)
 				.then((success) => {
 					if (success === 'OK') {
 						alert('User created Successfully');
@@ -172,14 +162,7 @@ export default function Staff(props) {
 					alert('An error occured while performing your request');
 				});
 		} else {
-			fetch(Api + 'user/update/'+staffid.value, {
-				method: 'PUT',
-				headers: {
-					'content-type': 'application/json'
-				},
-				body: JSON.stringify(staffPostBody)
-			})
-				.then((res) => res.text())
+			staff.updateStaff(staffid.value,staffPostBody)
 				.then((success) => {
 					if (success === 'OK') {
 						alert('User Updated Successfully');
@@ -199,13 +182,7 @@ export default function Staff(props) {
 	const Delete = (e, index) => {
 		if (window.confirm('Are you sure you want to delete this user?')) {
 			debugger;
-			fetch(Api + 'user/delete/' + index, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-				.then((response) => response.text())
+			staff.deleteStaff(index)
 				.then((success) => {
 					alert('user deleted successfully!');
 					setIsSuccess('success');
@@ -384,12 +361,10 @@ function useFormDetails(initialInput) {
 	const [ value, setValue ] = useState(initialInput);
 
 	function handleChange(e) {
-		debugger;
 		setValue(e.target.value);
 	}
 
 	function setState(e, val) {
-		debugger;
 		setValue(val);
 	}
 
