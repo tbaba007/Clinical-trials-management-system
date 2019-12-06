@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
-import { Api } from '../../Helper/Api';
 import ViewHistory from './viewhistory';
+const ComplaintHelper=require('../../Services/complaints.service');
 export default function ComplaintDetails(props) {
 	const [ testRequired, setTestRequired ] = useState('');
 	const [ complaint, setComplaint ] = useState('');
@@ -55,14 +55,7 @@ export default function ComplaintDetails(props) {
 			attendedto: testRequired === 'No' ? 'Yes' : 'No',
 			actiontaken: testRequired === 'No' ? 'Patient Given Medication' : ''
 		};
-		fetch(Api + 'medicalhistory/update/' + props.userdata.id, {
-			method: 'PUT',
-			headers: {
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify(patientData)
-		})
-			.then((res) => res.text())
+		ComplaintHelper.updateComplaint(props.userdata.id,patientData)
 			.then((success) => {
 				alert('Details saved successfully!');
 				window.location.reload(true);

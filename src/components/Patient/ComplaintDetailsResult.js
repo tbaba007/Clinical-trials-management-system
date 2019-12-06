@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
-import { Api } from '../../Helper/Api';
+const complaintHelper=require('../../Services/complaints.service');
 export default function ComplaintDetails(props) {
 	
 	const [ diseaseid, setDiseaseId ] = useState(0);
@@ -35,14 +35,8 @@ export default function ComplaintDetails(props) {
 			attendedto:'TRUE'
 		
 		};
-		fetch(Api + 'medicalhistory/doctorupdate/' + props.userdata.id, {
-			method: 'PUT',
-			headers: {
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify(patientData)
-		})
-			.then((res) => res.text())
+		complaintHelper.doctorUpdate(props.userdata.id,patientData)
+			
 			.then((success) => {
 				alert('Details saved successfully!');
 				window.location.reload(true);

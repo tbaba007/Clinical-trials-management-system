@@ -1,7 +1,7 @@
 import React,{useState,useRef,useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
-import { Api } from '../../Helper/Api';
+const complaintHelper=require('../../Services/patient.service');
 export default function SchedulePatient(props)
 {
     
@@ -48,13 +48,8 @@ export default function SchedulePatient(props)
             attendedto:"FALSE",
             doctorvisited:doctorid
         };
-        fetch(Api+"medicalhistory/schedule",{
-            method:'POST',
-            headers:{
-                'content-type':'application/json'
-            },
-            body:JSON.stringify(patientData)
-        }).then(res=>res.text())
+
+        complaintHelper.schedulePatient(patientData)
         .then(success=>{
             alert('Patient scheduled successfully!')
           window.location.reload(true);

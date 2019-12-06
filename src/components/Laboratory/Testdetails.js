@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
-import { Api } from '../../Helper/Api';
+const labResult=require('../../Services/laboratory.service');
 export default function TestDetails(props) {
 	const [ testResult, setTestResult ] = useState('');
 
@@ -42,15 +42,7 @@ export default function TestDetails(props) {
             
             
         };
-       
-		fetch(Api + 'testresult/add',{
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify(patientData)
-		})
-			.then((res) => res.text())
+		labResult.addTestResult(patientData)
 			.then((success) => {
 				alert('Details saved successfully!');
 				window.location.reload(true);

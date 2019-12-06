@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Popup from 'reactjs-popup';
-import { Api } from '../../Helper/Api';
 import Header from '../Header/header';
 import TestDetails from './Testdetails';
+const PendingTest=require('../../Services/laboratory.service');
 export default function TestList(props) {
 	const [ pendingTestList, setpendingTestList ] = useState([]);
 	useEffect(() => {
 		const fetchPendingTests = async () => {
-			await fetch(
-				Api +
-					'medicalhistory/getPendingTest/' +
-					new Date().getFullYear() +
-					'-' +
-					(parseInt(new Date().getMonth().toString()) + 1) +
-					'-' +
-					new Date().getDate()
-			)
-				.then((res) => res.json())
+			await PendingTest.getPendingTestToday(	new Date().getFullYear() +
+			'-' +
+			(parseInt(new Date().getMonth().toString()) + 1) +
+			'-' +
+			new Date().getDate())
 				.then((success) => {
 					setpendingTestList(success);
 				})

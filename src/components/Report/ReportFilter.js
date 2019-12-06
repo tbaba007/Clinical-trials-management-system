@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Api } from '../../Helper/Api';
 import Header from '../Header/header';
 import ReportList from '../Report/ReportList';
-
+const diseassHelper=require('../../Services/disease.service');
+const medicalHistory=require('../../Services/medicalhistory.service')
 export default function ReportFilter(props) {
 	const fromdate = useFormDetails('');
 	const todate = useFormDetails('');
@@ -11,8 +11,7 @@ export default function ReportFilter(props) {
 	const [ diseaseid, setDiseaseid ] = useState(0);
 
 	useEffect(() => {
-		fetch(Api + 'condition/getall')
-			.then((response) => response.json())
+		diseassHelper.fetchDisease()
 			.then((success) => setDiseaList(success))
 			.catch((err) => {});
 	}, [setDiseaList]);
@@ -27,12 +26,7 @@ export default function ReportFilter(props) {
 
 	const handleDelete=(e,id,index)=>{
 		if(window.confirm('Are you sure you want to delete this record?'))
-		fetch(Api+"medicalhistory/deleteinfo/"+id,{
-			method:'DELETE',
-			headers:{
-				'Content-type':'application/json'
-			}
-		}).then(response=>response.text())
+		medicalHistory.deleteInfo(id)
 		.then(success=>{
 			if(success==="OK")
 			{
@@ -70,27 +64,13 @@ export default function ReportFilter(props) {
 		};
 
 		if (diseaseid > 0) {
-			fetch(Api + 'medicalhistory/analysis/' + diseaseid, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(analysisValues)
-			})
-				.then((response) => response.json())
+			medicalHistory.analysis(diseaseid,analysisValues)
 				.then((success) => {
 					setAnalysis(success);
 				})
 				.catch((err) => alert('An error occured while performing your request'));
 		} else {
-			fetch(Api + 'medicalhistory/analysis', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(analysisValues)
-			})
-				.then((res) => res.json())
+			medicalHistory.medicalHistoryAnalysis(analysisValues)
 				.then((success) => {
 					setAnalysis(success);
 				})

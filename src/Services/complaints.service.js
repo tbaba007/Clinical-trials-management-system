@@ -13,15 +13,15 @@ const deleteComplaint = (id) => {
         httpHelpers.Delete()).then(response.handleResponseText)
 }
 
-const updateComplaint = (id) => {
+const updateComplaint = (id,model) => {
     return fetch(Api + 'medicalhistory/update/' + id,
-        httpHelpers.Put()).then(response.handleResponseText)
+        httpHelpers.Put(model)).then(response.handleResponseText)
 
 }
 
-const doctorUpdate = (id) => {
+const doctorUpdate = (id,model) => {
     return fetch(Api + 'medicalhistory/doctorupdate/' + id,
-        httpHelpers.Put()).then(response.handleResponseText)
+        httpHelpers.Put(model)).then(response.handleResponseText)
 }
 
 export {

@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Popup from 'reactjs-popup';
 import ReportDetails from './ReportDetails';
 export default function ReportList(props) {
-	debugger;
 	
 	return (
 		<React.Fragment>

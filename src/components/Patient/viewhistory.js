@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Assets/styles/common.css';
-import { Api } from '../../Helper/Api';
 import ViewHistorydetails from './viewHistoryDetails';
+const medicalHistoryHelper=require('../../Services/medicalhistory.service');
 export default function ViewHistory(props) {
 	
 	const [ medicalhistory, setMedicalHistory ] = useState([]);
@@ -14,9 +14,9 @@ export default function ViewHistory(props) {
 		else setDivOpen(false);
 	}
 	useEffect(() => {
-		const fetDiseases = () => {
-			fetch(Api + 'medicalhistory/getbyid/' + props.userdetals.userdata.patient.id)
-				.then((response) => response.json())
+		const fetchMedicalDetailsById = () => {
+			medicalHistoryHelper.getDetailsById(props.userdetals.userdata.patient.id)
+			
 				.then((success) => {
 					setMedicalHistory(success);
 				})
@@ -24,7 +24,7 @@ export default function ViewHistory(props) {
 					alert(err.message);
 				});
 		};
-		fetDiseases();
+		fetchMedicalDetailsById();
 	}, [props.userdetals.userdata.patient.id]);
 
 	return (

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Popup from 'reactjs-popup';
-import { Api } from '../../Helper/Api';
 import Header from '../Header/header';
 import ComplaintDetails from './ComplaintDetails';
 import ComplaintDetailsResult from './ComplaintDetailsResult';
+const diseaseHelper=require('../../Services/disease.service');
+const complaintHelper=require('../../Services/complaints.service');
 export default function ManageComplaints(props) {
 	const [ complaintList, setComplaintList ] = useState([]);
 	const [ conditionList, setConditionList ] = useState([]);
@@ -12,8 +13,7 @@ export default function ManageComplaints(props) {
 
 	useEffect(() => {
 		const fetDiseases = async () => {
-			await fetch(Api + 'condition/getAll')
-				.then((response) => response.json())
+			diseaseHelper.fetchDisease()
 				.then((success) => {
 					
 					setConditionList(success);
@@ -24,16 +24,13 @@ export default function ManageComplaints(props) {
 	}, []);
 	useEffect(() => {
 		const fetchComplaintsToday = async () => {
-			await fetch(
-				Api +
-					'medicalhistory/getMedicalHistoryByDate/' +
-					new Date().getFullYear() +
+			await complaintHelper.fetchComplaintsToday(new Date().getFullYear() +
 					'-' +
 					(parseInt(new Date().getMonth().toString()) + 1) +
 					'-' +
 					new Date().getDate()
 			)
-				.then((res) => res.json())
+				
 				.then((success) => {
 					setComplaintList(success);
 				})
@@ -47,12 +44,8 @@ export default function ManageComplaints(props) {
 	const Delete=(e,id)=>{
 		debugger;
 		if(window.confirm('Are you aure you want to delete?'))
-		fetch(Api+"medicalhistory/deletecomplaint/"+id,{
-			method:'DELETE',
-			headers:{
-				'content-type':'application/json'
-			}
-		}).then(res=>res.text())
+
+		complaintHelper.deleteComplaint(id)
 		.then(success=>{
 			if(success==="OK")
 			{
