@@ -1,10 +1,10 @@
 
 
-const Put=()=>{
+const Put=(updateModel)=>{
     const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' }
-      
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updateModel)
     };
     return requestOptions;
 }

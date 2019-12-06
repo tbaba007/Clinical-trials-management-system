@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from '../Header/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PatientList from './PatientList';
-import {Redirect} from 'react-router-dom';
 const patientService=require('../../Services/patient.service');
 export default function Patient(props) {
 	
